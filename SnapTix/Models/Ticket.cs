@@ -14,5 +14,6 @@
 
         // Navigation property (code)
         public Event? Events { get; set; }
-    
+
+    }
 }
