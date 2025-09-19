@@ -11,5 +11,8 @@
         public string Owner { get; set; } = string.Empty;
         public DateTime EventDate { get; set; }
 
+        // Navigation property (code)
+        public List<Ticket>? Tickets { get; set; }
+
     }
 }

@@ -13,6 +13,6 @@
         public DateTime EventDate { get; set; }
 
         // Navigation property (code)
-        public List<Event>? Events { get; set; }
-    }
+        public Event? Events { get; set; }
+    
 }
