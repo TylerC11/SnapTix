@@ -17,7 +17,7 @@ namespace SnapTix.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Events()
         {
             return View();
         }
