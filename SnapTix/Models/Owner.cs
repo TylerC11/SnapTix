@@ -5,9 +5,8 @@
         // Primary key
         public int OwnerId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string ContactEmail { get; set; } = string.Empty;
-        public string ContactPhone { get; set; } = string.Empty;
+        public string ContactInfo { get; set; } = string.Empty;
         // Navigation property
-        public List<Event>? Events { get; set; }
+        public List<Sport>? Sports { get; set; }
     }
 }

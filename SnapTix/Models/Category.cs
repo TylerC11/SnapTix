@@ -4,9 +4,10 @@
     {
         // Primary key
         public int CategoryId { get; set; }
+
         public string Name { get; set; } = string.Empty;
 
         // Navigation property
-        public List<Event>? Events { get; set; };
+        public List<Sport>? Sports { get; set; }
     }
 }

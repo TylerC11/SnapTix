@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SnapTix.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<SnapTixContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SnapTixContext") ?? throw new InvalidOperationException("Connection string 'SnapTixContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
