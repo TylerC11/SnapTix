@@ -1,4 +1,6 @@
-﻿namespace SnapTix.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SnapTix.Models
 {
     public class Sport
     {
@@ -12,10 +14,14 @@
         public string Category { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
         public string Owner { get; set; } = string.Empty;
+        [Display(Name = "Time of Event")]
         public DateTime SportDate { get; set; }
 
         // Navigation property (code)
+        [Display(Name = "Category")]
         public Category? Categorys { get; set; }
+        [Display(Name = "Owner")]
         public Owner? Owners { get; set; }
+       
     }
 }

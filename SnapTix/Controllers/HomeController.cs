@@ -1,27 +1,45 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SnapTix.Data;
+using System.Diagnostics;
 
 namespace SnapTix.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SnapTixContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SnapTixContext context)
         {
             _logger = logger;
+            _context = context;
         }
-
-        public IActionResult Index()
+            public async Task<IActionResult> Index()
         {
-            return View();
+            var snapTixContext = _context.Sport.Include(s => s.Categorys).Include(s => s.Owners);
+            return View(await snapTixContext.ToListAsync());
         }
 
-        public IActionResult Events()
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sport = await _context.Sport
+                .Include(s => s.Categorys)
+                .Include(s => s.Owners)
+                .FirstOrDefaultAsync(m => m.SportId == id);
+            if (sport == null)
+            {
+                return NotFound();
+            }
+
+            return View(sport);
         }
 
-       
+
     }
 }
