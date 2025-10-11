@@ -7,7 +7,7 @@
 <h1>Home</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-controller="Sports" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -19,17 +19,21 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.OwnerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.SportDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoPath)
+            </th>
+           
         </tr>
     </thead>
     <tbody>
@@ -43,21 +47,31 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category)
+                    @Html.DisplayFor(modelItem => item.Owners.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categorys.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Location)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Owner)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.SportDate)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.SportId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.SportId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
+                    @Html.DisplayFor(modelItem => item.PhotoPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhotoPath)
+                    @if (!string.IsNullOrEmpty(item.PhotoPath))
+                    {
+                        <img src="@item.PhotoPath" alt="Sport Photo" style="max-width:100px; height:auto;" />
+                    }
+                </td>
+                <td>
+                    <a asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SportId">Details</a>
+                    <a asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
                 </td>
             </tr>
         }
