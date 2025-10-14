@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SnapTix.Data;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 
 namespace SnapTix.Controllers
 {
+    [Authorize] //restricted access
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
