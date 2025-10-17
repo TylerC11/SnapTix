@@ -42,10 +42,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
-
 // add user authentication
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseStaticFiles();
 

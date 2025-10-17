@@ -59,13 +59,9 @@
                     @Html.DisplayFor(modelItem => item.SportDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PhotoPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhotoPath)
                     @if (!string.IsNullOrEmpty(item.PhotoPath))
                     {
-                        <img src="@item.PhotoPath" alt="Sport Photo" style="max-width:100px; height:auto;" />
+                        <img src="@item.PhotoPath" alt="Sport Photo" style="max-width:100px; height:100px;" />
                     }
                 </td>
                 <td>
