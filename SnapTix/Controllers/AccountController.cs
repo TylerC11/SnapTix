@@ -28,7 +28,7 @@ namespace PhotoAlbum.Controllers
         {
 
             // Validate username and password (username and password stored in secrets.json)
-            if (username == _configuration["username"] && password == _configuration["password"])
+            if (username == _configuration["sport_username"] && password == _configuration["sport_password"])
             {
                 // Create a list of claims identifying the user
                 var claims = new List<Claim>
