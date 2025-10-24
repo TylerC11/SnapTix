@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,10 +19,17 @@ namespace SnapTix.Controllers
     public class SportsController : Controller
     {
         private readonly SnapTixContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly BlobContainerClient _containerClient;
 
-        public SportsController(SnapTixContext context)
+        public SportsController(SnapTixContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+
+            var connectionString = _configuration["AzureStorage"];
+            var containerName = "snaptix-uploads";
+            _containerClient = new BlobContainerClient(connectionString, containerName);
         }
 
         // GET: Sports
@@ -62,20 +71,39 @@ namespace SnapTix.Controllers
             {
                 if (sport.PhotoFile != null && sport.PhotoFile.Length > 0)
                 {
-                    string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    if (!Directory.Exists(uploadDir))
-                        Directory.CreateDirectory(uploadDir);
+                    //    string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    //    if (!Directory.Exists(uploadDir))
+                    //        Directory.CreateDirectory(uploadDir);
 
-                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(sport.PhotoFile.FileName);
-                    string filePath = Path.Combine(uploadDir, uniqueFileName);
+                    //    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(sport.PhotoFile.FileName);
+                    //    string filePath = Path.Combine(uploadDir, uniqueFileName);
 
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    //    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    //    {
+                    //        await sport.PhotoFile.CopyToAsync(fileStream);
+                    //    }
+
+                    //    // Save path for use in <img src="">
+                    //    sport.PhotoPath = "/images/" + uniqueFileName;
+                    //}
+
+                    //_context.Add(sport);
+                    //await _context.SaveChangesAsync();
+                    //return RedirectToAction("Index", "Home");
+
+                    var fileUpload = sport.PhotoFile;
+
+                    // the name of the file to save in Azure
+                    string blobName = Guid.NewGuid().ToString() + fileUpload.FileName;
+
+                    var blobClient = _containerClient.GetBlobClient(blobName);
+
+                    using (var stream = fileUpload.OpenReadStream())
                     {
-                        await sport.PhotoFile.CopyToAsync(fileStream);
+                        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = fileUpload.ContentType });
                     }
-
-                    // Save path for use in <img src="">
-                    sport.PhotoPath = "/images/" + uniqueFileName;
+                    //Get URL of the uploaded/blob file
+                    string fileURL = blobClient.Uri.ToString();
                 }
 
                 _context.Add(sport);
@@ -83,11 +111,11 @@ namespace SnapTix.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Name", sport.CategoryId);
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "OwnerId", "Name", sport.OwnerId);
+                ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Name", sport.CategoryId);
+                ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "OwnerId", "Name", sport.OwnerId);
 
-            return View(sport);
-        }
+                return View(sport);
+            }
         // GET: Sports/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

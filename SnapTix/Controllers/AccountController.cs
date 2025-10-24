@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace PhotoAlbum.Controllers
+namespace SnapTix.Controllers
 {
     public class AccountController : Controller
     {
