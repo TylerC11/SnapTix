@@ -1,10 +1,13 @@
-﻿namespace SnapTix.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SnapTix.Models
 {
     public class Owner
     {
         // Primary key
         public int OwnerId { get; set; }
         public string Name { get; set; } = string.Empty;
+        [Display(Name = "Contact")]
         public string ContactInfo { get; set; } = string.Empty;
         // Navigation property
         public List<Sport>? Sports { get; set; }
