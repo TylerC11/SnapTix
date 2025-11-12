@@ -1,17 +1,11 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SnapTix.Data;
 using SnapTix.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SnapTix.Controllers
 {
@@ -71,26 +65,6 @@ namespace SnapTix.Controllers
             {
                 if (sport.PhotoFile != null && sport.PhotoFile.Length > 0)
                 {
-                    //    string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    //    if (!Directory.Exists(uploadDir))
-                    //        Directory.CreateDirectory(uploadDir);
-
-                    //    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(sport.PhotoFile.FileName);
-                    //    string filePath = Path.Combine(uploadDir, uniqueFileName);
-
-                    //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    //    {
-                    //        await sport.PhotoFile.CopyToAsync(fileStream);
-                    //    }
-
-                    //    // Save path for use in <img src="">
-                    //    sport.PhotoPath = "/images/" + uniqueFileName;
-                    //}
-
-                    //_context.Add(sport);
-                    //await _context.SaveChangesAsync();
-                    //return RedirectToAction("Index", "Home");
-
                     var fileUpload = sport.PhotoFile;
 
                     // the name of the file to save in Azure
@@ -104,6 +78,7 @@ namespace SnapTix.Controllers
                     }
                     //Get URL of the uploaded/blob file
                     string fileURL = blobClient.Uri.ToString();
+                    sport.PhotoPath = fileURL;
                 }
 
                 _context.Add(sport);
@@ -141,33 +116,37 @@ namespace SnapTix.Controllers
             {
                 try
                 {
-                    // Handle new photo upload
+                    // Get the existing record for comparison
+                    var existingSport = await _context.Sport.AsNoTracking()
+                        .FirstOrDefaultAsync(s => s.SportId == sport.SportId);
+
+                    if (existingSport == null)
+                        return NotFound();
+
                     if (sport.PhotoFile != null && sport.PhotoFile.Length > 0)
                     {
-                        string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                        if (!Directory.Exists(uploadDir))
-                            Directory.CreateDirectory(uploadDir);
+                        var fileUpload = sport.PhotoFile;
 
-                        string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(sport.PhotoFile.FileName);
-                        string filePath = Path.Combine(uploadDir, uniqueFileName);
+                        // Give the blob a unique name
+                        string blobName = Guid.NewGuid().ToString() + fileUpload.FileName;
 
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        var blobClient = _containerClient.GetBlobClient(blobName);
+
+                        using (var stream = fileUpload.OpenReadStream())
                         {
-                            await sport.PhotoFile.CopyToAsync(fileStream);
+                            await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = fileUpload.ContentType });
                         }
 
-                        sport.PhotoPath = "/images/" + uniqueFileName;
+                        // Save the blob URL to PhotoPath
+                        sport.PhotoPath = blobClient.Uri.ToString();
                     }
                     else
                     {
-                        // Preserve existing photo if no new file is uploaded
-                        var existingSport = await _context.Sport.AsNoTracking()
-                            .FirstOrDefaultAsync(s => s.SportId == sport.SportId);
-
-                        if (existingSport != null)
-                            sport.PhotoPath = existingSport.PhotoPath;
+                        // Keep existing photo if user didn’t upload a new one
+                        sport.PhotoPath = existingSport.PhotoPath;
                     }
 
+                    // Update the database record
                     _context.Update(sport);
                     await _context.SaveChangesAsync();
                 }

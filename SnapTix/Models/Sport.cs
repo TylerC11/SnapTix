@@ -38,5 +38,8 @@ namespace SnapTix.Models
 
         [Display(Name = "Owner")]
         public Owner? Owners { get; set; }
+
+        [Display(Name = "Purchase")]
+        public List<Purchase>? Purchases { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace SnapTix.Controllers
             return View();
         }
 
-        // POST: /Account/Login
+        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogoutConfirmed()

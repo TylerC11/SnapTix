@@ -7,7 +7,7 @@
 <h1>Owners</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table table-danger table-borderless">
     <thead>
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.ContactInfo)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OwnerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OwnerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OwnerId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.OwnerId" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OwnerId" class="btn btn-primary">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OwnerId" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }

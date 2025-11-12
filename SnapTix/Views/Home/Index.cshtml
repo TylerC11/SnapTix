@@ -7,7 +7,7 @@
 <h1>Home</h1>
 
 <p>
-    <a asp-controller="Sports" asp-action="Create">Create New</a>
+    <a asp-controller="Sports" asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table table-danger table-borderless">
     <thead>
@@ -65,9 +65,9 @@
                     }
                 </td>
                 <td>
-                    <a asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.SportId">Details</a>
-                    <a asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
+                    <a asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SportId" class="btn btn-primary">Details</a>
+                    <a asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
