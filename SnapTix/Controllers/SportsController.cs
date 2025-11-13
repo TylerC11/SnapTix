@@ -41,6 +41,7 @@ namespace SnapTix.Controllers
             var sport = await _context.Sport
                 .Include(s => s.Categorys)
                 .Include(s => s.Owners)
+                .Include(s => s.Purchases)
                 .FirstOrDefaultAsync(m => m.SportId == id);
 
             if (sport == null) return NotFound();
