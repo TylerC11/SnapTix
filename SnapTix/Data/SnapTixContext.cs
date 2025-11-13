@@ -17,5 +17,7 @@ namespace SnapTix.Data
         public DbSet<SnapTix.Models.Sport> Sport { get; set; } = default!;
         public DbSet<SnapTix.Models.Owner> Owner { get; set; } = default!;
         public DbSet<SnapTix.Models.Category> Category { get; set; } = default!;
+        public DbSet<SnapTix.Models.Purchase> Purchase { get; set; } = default!;
+
     }
 }
