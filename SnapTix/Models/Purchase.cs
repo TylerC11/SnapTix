@@ -8,10 +8,10 @@ namespace SnapTix.Models
         // Primary key
         public int PurchaseId { get; set; }
         public int Quantity { get; set; }
+        [Column(TypeName = "decimal(10,2)")]
         public decimal TotalPrice { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal PricePerTicket { get; set; }
-        [Column(TypeName = "decimal(10,2)")]
         public string BuyerName { get; set; } = string.Empty;
         public string BuyerEmail { get; set; } = string.Empty;
         public DateTime PurchaseDate { get; set; }
