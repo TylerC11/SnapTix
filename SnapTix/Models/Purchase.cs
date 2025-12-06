@@ -15,6 +15,10 @@ namespace SnapTix.Models
         public string BuyerName { get; set; } = string.Empty;
         public string BuyerEmail { get; set; } = string.Empty;
         public DateTime PurchaseDate { get; set; }
+        public string CardNumber { get; set; } = string.Empty;
+        public string CardHolderName { get; set; } = string.Empty;
+        public string ExpiryDate { get; set; } = string.Empty;
+        public string CVV { get; set; } = string.Empty;
 
 
         // Foreign Key
